@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>يويتي</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap');
+:root {
+  --bg:#070607; --card:rgba(20,14,18,.72); --line:rgba(255,255,255,.12);
+  --pink:#ff5b91; --pink2:#ff9fbd; --text:#fff7fa; --muted:#cbbbc1;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:
+radial-gradient(circle at 15% 15%,rgba(255,74,126,.14),transparent 28%),
+radial-gradient(circle at 85% 25%,rgba(255,135,175,.10),transparent 25%),
+linear-gradient(145deg,#050405,#12090f 55%,#050405);
+color:var(--text);font-family:Cairo,system-ui,sans-serif;min-height:100vh;overflow-x:hidden}
+body.locked{overflow:hidden}
+#lock{position:fixed;inset:0;z-index:50;display:grid;place-items:center;padding:20px;
+background:radial-gradient(circle at center,rgba(50,20,34,.35),#040304 70%);transition:opacity .8s,visibility .8s}
+#lock.hide{opacity:0;visibility:hidden;pointer-events:none}
+.lock-card{width:min(430px,100%);padding:38px 28px;border:1px solid var(--line);border-radius:30px;
+background:rgba(15,10,13,.72);backdrop-filter:blur(22px);box-shadow:0 30px 100px rgba(0,0,0,.55);text-align:center}
+.lock-heart{font-size:54px;filter:drop-shadow(0 0 25px rgba(255,91,145,.5));animation:pulse 1.8s infinite}
+h1{font-family:"Playfair Display",serif;font-size:44px;margin:10px 0 4px}
+.subtitle{color:var(--muted);margin-bottom:26px}
+input{width:100%;padding:15px 18px;border-radius:16px;border:1px solid var(--line);outline:none;
+background:rgba(255,255,255,.06);color:#fff;font-size:18px;text-align:center;letter-spacing:2px}
+button{border:0;cursor:pointer;font:600 16px Cairo;border-radius:16px;padding:14px 22px;color:white;
+background:linear-gradient(135deg,#ff4f88,#c51f61);box-shadow:0 12px 30px rgba(255,79,136,.22);transition:.2s}
+button:hover{transform:translateY(-2px)}
+#openBtn{width:100%;margin-top:12px}
+#error{height:24px;color:#ff8eac;font-size:13px;margin-top:9px}
+#site{opacity:0;transform:translateY(20px);transition:1s;}
+#site.show{opacity:1;transform:none}
+.hero{min-height:100vh;display:grid;place-items:center;padding:70px 18px;position:relative}
+.hero-inner{width:min(980px,100%);text-align:center;position:relative;z-index:2}
+.eyebrow{letter-spacing:4px;text-transform:uppercase;color:var(--pink2);font-size:12px}
+.hero-title{font-family:"Playfair Display",serif;font-size:clamp(64px,13vw,150px);line-height:.9;margin:20px 0;
+text-shadow:0 0 50px rgba(255,91,145,.18)}
+.hero-title span{display:block;color:var(--pink)}
+.date{color:var(--muted);font-size:14px}
+.scroll{margin-top:55px;color:#bdaeb5;font-size:13px;animation:float 2s infinite}
+.section{width:min(1100px,92%);margin:auto;padding:95px 0}
+.section-title{font-family:"Playfair Display",serif;font-size:42px;text-align:center;margin:0 0 35px}
+.message{max-width:850px;margin:auto;padding:34px 28px;border:1px solid var(--line);border-radius:28px;
+background:linear-gradient(145deg,rgba(255,255,255,.07),rgba(255,255,255,.025));backdrop-filter:blur(15px);
+box-shadow:0 25px 70px rgba(0,0,0,.28);font-size:20px;line-height:2.1;color:#fff5f8;text-align:right}
+.gallery{display:grid;grid-template-columns:repeat(12,1fr);gap:16px}
+.photo{margin:0;overflow:hidden;border-radius:22px;border:1px solid var(--line);background:#111;
+box-shadow:0 18px 50px rgba(0,0,0,.32)}
+.photo img{display:block;width:100%;height:100%;object-fit:cover;transition:transform .7s}
+.photo:hover img{transform:scale(1.045)}
+.p1{grid-column:span 7;height:520px} .p2{grid-column:span 5;height:520px}
+.p3{grid-column:span 5;height:430px} .p4{grid-column:span 7;height:430px}
+.p5{grid-column:span 7;height:560px} .p6{grid-column:span 5;height:560px}
+.music{display:flex;justify-content:center;align-items:center;gap:12px;flex-wrap:wrap}
+.music-note{color:var(--muted);font-size:13px;text-align:center;max-width:560px;line-height:1.8}
+footer{text-align:center;padding:60px 20px 80px;color:#8f8088;font-size:12px}
+.heart{position:fixed;bottom:-30px;font-size:18px;opacity:.6;pointer-events:none;z-index:1;animation:rise linear forwards}
+@keyframes pulse{50%{transform:scale(1.08)}}
+@keyframes float{50%{transform:translateY(7px)}}
+@keyframes rise{to{transform:translateY(-115vh) rotate(25deg);opacity:0}}
+@media(max-width:700px){
+ .hero{min-height:92vh} .hero-title{font-size:76px}
+ .section{padding:70px 0} .message{font-size:17px;line-height:2}
+ .gallery{display:block} .photo{height:430px!important;margin-bottom:14px}
+ h1{font-size:38px}
+}
+
+.timer-wrap{max-width:900px;margin:auto;text-align:center}
+.timer-date{color:var(--pink2);font-size:15px;letter-spacing:3px;margin-bottom:22px}
+.timer-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:12px}
+.timer-box{padding:22px 10px;border:1px solid var(--line);border-radius:20px;
+background:linear-gradient(145deg,rgba(255,255,255,.07),rgba(255,255,255,.025));
+box-shadow:0 18px 50px rgba(0,0,0,.25)}
+.timer-box strong{display:block;font-family:"Playfair Display",serif;font-size:34px;color:var(--pink)}
+.timer-box span{display:block;color:var(--muted);font-size:12px;margin-top:4px}
+@media(max-width:700px){.timer-grid{grid-template-columns:repeat(3,1fr)}.timer-box{padding:18px 8px}.timer-box strong{font-size:28px}}
+</style>
+</head>
+<body class="locked">
+<div id="lock">
+  <div class="lock-card">
+    <div class="lock-heart">♥</div>
+    <h1>يويتي</h1>
+    <div class="subtitle">مفيش حد غيرك المفروض يشوف اللي هنا</div>
+    <input id="pass" type="password" inputmode="numeric" placeholder="اكتب الباسورد" autocomplete="off">
+    <button id="openBtn">فتح</button>
+    <div id="error"></div>
+  </div>
+</div>
+
+<main id="site">
+<section class="hero">
+  <div class="hero-inner">
+    <div class="eyebrow">A little piece of us</div>
+    <div class="hero-title">يويتي<span>♥</span></div>
+    <div class="date">21 / 12 / 2023</div>
+    <div class="scroll">انزلي بهدوء ↓</div>
+  </div>
+</section>
+
+<section class="section">
+  <h2 class="section-title">الكلام اللي ليكي</h2>
+  <div class="message">يووويتييي<br><br>بحبك اوي عارف اني غلطت ف حقك كتير وزعلتك كتير وبعدنا اكتر ما كنا سوا بس أنا محبتش واحده قدك ولا هحب ينور عيني انتي فعلا احلي حاجه حصلتلي عدي علينا أوقات كتير وحشه و تعب بس ان شاءالله هنفضل سوا لحد ما تبقي مراتي وحبيبتي وكل حاجه ليا زي ما انتي كل حاجه ليا ان انتي مجنونه ومريضه بس بحبك وبحب كل حاجه فيكي عيوبك قبل مميزاتك ونفسي ربنا يخليكي ليا ع طول يروح قلبي ومنتحرمش من بعد يعيوني 💕💕💕💕💕💕💕💕</div>
+</section>
+
+<section class="section">
+  <h2 class="section-title">من يوم ما بدأت حكايتنا</h2>
+  <div class="timer-wrap">
+    <div class="timer-date">21 / 12 / 2023</div>
+    <div class="timer-grid">
+      <div class="timer-box"><strong id="years">0</strong><span>سنة</span></div>
+      <div class="timer-box"><strong id="months">0</strong><span>شهر</span></div>
+      <div class="timer-box"><strong id="days">0</strong><span>يوم</span></div>
+      <div class="timer-box"><strong id="hours">0</strong><span>ساعة</span></div>
+      <div class="timer-box"><strong id="minutes">0</strong><span>دقيقة</span></div>
+      <div class="timer-box"><strong id="seconds">0</strong><span>ثانية</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <h2 class="section-title">ذكريات</h2>
+  <div class="gallery">
+    <figure class="photo p1"><img src="images/photo1.jpg" alt=""></figure>
+    <figure class="photo p2"><img src="images/photo3.jpg" alt=""></figure>
+    <figure class="photo p3"><img src="images/photo4.jpg" alt=""></figure>
+    <figure class="photo p4"><img src="images/photo5.jpg" alt=""></figure>
+    <figure class="photo p5"><img src="images/photo6.jpg" alt=""></figure>
+  </div>
+</section>
+
+<footer>♥</footer>
+
+</main>
+
+<script>
+const PASSWORD = "21/12/2023";
+const lock = document.getElementById("lock");
+const site = document.getElementById("site");
+const pass = document.getElementById("pass");
+const error = document.getElementById("error");
+function unlock(){
+  if(pass.value === PASSWORD){
+    lock.classList.add("hide");
+    site.classList.add("show");
+    document.body.classList.remove("locked");
+setInterval(makeHeart, 700);
+  } else {
+    error.textContent = "الباسورد مش صح";
+    pass.value = "";
+    pass.focus();
+  }
+}
+document.getElementById("openBtn").addEventListener("click", unlock);
+pass.addEventListener("keydown", e=>{ if(e.key==="Enter") unlock(); });
+
+const startDate = new Date(2023, 11, 21, 0, 0, 0);
+
+function updateTimer(){
+  const now = new Date();
+  let years = now.getFullYear() - startDate.getFullYear();
+  let anniversary = new Date(startDate);
+  anniversary.setFullYear(startDate.getFullYear() + years);
+
+  if(now < anniversary){
+    years--;
+    anniversary = new Date(startDate);
+    anniversary.setFullYear(startDate.getFullYear() + years);
+  }
+
+  let remaining = now - anniversary;
+  const dayMs = 24*60*60*1000;
+  const hourMs = 60*60*1000;
+  const minuteMs = 60*1000;
+
+  const days = Math.floor(remaining / dayMs);
+  remaining %= dayMs;
+  const hours = Math.floor(remaining / hourMs);
+  remaining %= hourMs;
+  const minutes = Math.floor(remaining / minuteMs);
+  const seconds = Math.floor((remaining % minuteMs) / 1000);
+
+  document.getElementById("years").textContent = years;
+  document.getElementById("months").textContent = "—";
+  document.getElementById("days").textContent = days;
+  document.getElementById("hours").textContent = hours;
+  document.getElementById("minutes").textContent = minutes;
+  document.getElementById("seconds").textContent = seconds;
+}
+setInterval(updateTimer, 1000);
+updateTimer();
+
+function makeHeart(){
+  const h=document.createElement("div");
+  h.className="heart";
+  h.textContent=Math.random()>.25?"♥":"✦";
+  h.style.left=(Math.random()*100)+"vw";
+  h.style.animationDuration=(5+Math.random()*5)+"s";
+  h.style.fontSize=(12+Math.random()*18)+"px";
+  document.body.appendChild(h);
+  setTimeout(()=>h.remove(),10000);
+}
+</script>
+</body>
+</html>
